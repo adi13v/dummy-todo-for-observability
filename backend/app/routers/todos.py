@@ -33,7 +33,6 @@ def create_todo(
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
-    raise ValueError("Something went wrong!")
     return db_todo
 
 
