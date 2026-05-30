@@ -62,3 +62,27 @@ class GoalCreate(BaseModel):
 
 class GoalTaskUpdate(BaseModel):
     completed: bool
+
+# ==================== CHAT SCHEMAS ====================
+
+class MessageCreate(BaseModel):
+    content: str
+
+class MessageResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    id: str
+    chat_id: str = Field(..., alias="chatId")
+    role: str
+    content: str
+    created_at: datetime = Field(..., alias="createdAt")
+
+class ChatCreate(BaseModel):
+    title: str = "New Chat"
+
+class ChatResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    id: str
+    title: str
+    created_at: datetime = Field(..., alias="createdAt")

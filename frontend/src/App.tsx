@@ -3,9 +3,16 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { TodoPage } from './components/TodoPage';
 import { GoalsPage } from './components/GoalsPage';
+import { AIChatPage } from './components/AIChatPage';
 import { AuthPage } from './components/AuthPage';
 import { api } from './services/api';
 import posthog from 'posthog-js';
+
+declare global {
+  interface Window {
+    Intercom: (...args: any[]) => void;
+  }
+}
 
 function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -31,6 +38,12 @@ function App() {
   const handleAuthSuccess = (email: string) => {
     setUserEmail(email);
     posthog.identify(email, { email: email });
+    window.Intercom('boot', {
+      api_base: 'https://api-iam.intercom.io',
+      app_id: 'dcadjsbz',
+      email: email,
+      name: email.split('@')[0],
+    });
   };
 
   const handleLogout = () => {
@@ -63,6 +76,7 @@ function App() {
           <Routes>
             <Route path="/todos" element={<TodoPage />} />
             <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/chat" element={<AIChatPage />} />
             <Route path="*" element={<Navigate to="/todos" replace />} />
           </Routes>
         </main>

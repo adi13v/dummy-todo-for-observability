@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db
-from .routers import todos, goals, auth
+from .routers import todos, goals, auth, ai_chat
 from .auth import SECRET_KEY, ALGORITHM
 from . import models
 import jwt
@@ -74,6 +74,7 @@ async def set_sentry_user(request: Request, call_next):
 app.include_router(auth.router, prefix="/api")
 app.include_router(todos.router, prefix="/api")
 app.include_router(goals.router, prefix="/api")
+app.include_router(ai_chat.router, prefix="/api")
 
 
 @app.get("/")

@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@intercom/messenger-js-sdk": "^0.0.19",
     "@posthog/react": "^1.9.1",
     "@sentry/react": "^10.54.0",
     "axios": "^1.16.1",
     "lucide-react": "^1.16.0",
+    "playwright": "^1.60.0",
     "posthog-js": "^1.376.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

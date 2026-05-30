@@ -16,6 +16,7 @@ class User(Base):
 
     todos = relationship("Todo", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
     goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
+    chats = relationship("Chat", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
 
 class Todo(Base):
     __tablename__ = "todos"
@@ -50,3 +51,25 @@ class GoalTask(Base):
     goal_id = Column(String, ForeignKey("goals.id", ondelete="CASCADE"), nullable=False)
 
     goal = relationship("Goal", back_populates="tasks")
+
+class Chat(Base):
+    __tablename__ = "chats"
+
+    id = Column(String, primary_key=True, default=generate_uuid, index=True)
+    user_id = Column(String, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    title = Column(String, default="New Chat")
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    user = relationship("User", back_populates="chats")
+    messages = relationship("Message", back_populates="chat", cascade="all, delete-orphan", passive_deletes=True)
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(String, primary_key=True, default=generate_uuid, index=True)
+    chat_id = Column(String, ForeignKey("chats.id", ondelete="CASCADE"), nullable=False)
+    role = Column(String, nullable=False) # "user" or "assistant"
+    content = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    chat = relationship("Chat", back_populates="messages")

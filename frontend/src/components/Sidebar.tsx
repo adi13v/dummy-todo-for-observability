@@ -7,7 +7,8 @@ import {
   ChevronRight,
   User2,
   FolderLock,
-  LogOut
+  LogOut,
+  MessageSquare
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -21,6 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ userEmail, onLogout }) => {
 
   const isTodosActive = location.pathname.startsWith('/todos');
   const isGoalsActive = location.pathname.startsWith('/goals');
+  const isChatActive = location.pathname.startsWith('/chat');
 
   return (
     <aside style={styles.sidebar}>
@@ -56,6 +58,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ userEmail, onLogout }) => {
           <CalendarRange size={18} style={isGoalsActive ? styles.activeIcon : styles.icon} />
           <span style={styles.navText}>Upcoming Goals</span>
           {isGoalsActive && <ChevronRight size={14} style={styles.chevron} />}
+        </button>
+
+        <button
+          onClick={() => navigate('/chat')}
+          style={{
+            ...styles.navItem,
+            ...(isChatActive ? styles.activeNavItem : {})
+          }}
+        >
+          <MessageSquare size={18} style={isChatActive ? styles.activeIcon : styles.icon} />
+          <span style={styles.navText}>AI Chat</span>
+          {isChatActive && <ChevronRight size={14} style={styles.chevron} />}
         </button>
       </nav>
 

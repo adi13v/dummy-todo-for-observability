@@ -21,6 +21,21 @@ export interface Goal {
   createdAt: string;
 }
 
+export interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  chatId: string;
+  role: 'user' | 'assistant';
+  content: string;
+  createdAt: string;
+}
+
+
 // TOGGLE THIS TO SWITCH BETWEEN MOCK DATA (CLIENT DEMO) AND REAL BACKEND API CALLS
 const USE_MOCK = false;
 
@@ -192,5 +207,27 @@ export const api = {
     }
 
     await axios.delete(`${API_BASE_URL}/goals/${id}`);
+  },
+
+  // === CHAT API ===
+
+  async createChat(title: string = "New Chat"): Promise<ChatSession> {
+    const response = await axios.post<ChatSession>(`${API_BASE_URL}/chat/sessions`, { title });
+    return response.data;
+  },
+
+  async getChats(): Promise<ChatSession[]> {
+    const response = await axios.get<ChatSession[]>(`${API_BASE_URL}/chat/sessions`);
+    return response.data;
+  },
+
+  async getChatMessages(chatId: string): Promise<ChatMessage[]> {
+    const response = await axios.get<ChatMessage[]>(`${API_BASE_URL}/chat/sessions/${chatId}/messages`);
+    return response.data;
+  },
+
+  async sendChatMessage(chatId: string, content: string): Promise<ChatMessage> {
+    const response = await axios.post<ChatMessage>(`${API_BASE_URL}/chat/sessions/${chatId}/messages`, { content });
+    return response.data;
   }
 };
